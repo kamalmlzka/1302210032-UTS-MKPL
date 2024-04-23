@@ -15,30 +15,31 @@ public class TaxFunction {
 	 */
 	
 	
-	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
-		
-		int tax = 0;
-		
-		if (numberOfMonthWorking > 12) {
-			System.err.println("More than 12 month working per year");
-		}
-		
-		if (numberOfChildren > 3) {
-			numberOfChildren = 3;
-		}
-		
-		if (isMarried) {
-			tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - (54000000 + 4500000 + (numberOfChildren * 1500000))));
-		}else {
-			tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - 54000000));
-		}
-		
-		if (tax < 0) {
-			return 0;
-		}else {
-			return tax;
-		}
-			 
+	 public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
+		int taxableIncome = calculateTaxableIncome(monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible, isMarried, numberOfChildren);
+		int tax = calculateTaxAmount(taxableIncome);
+		return tax;
 	}
+	
+	private static int calculateTaxableIncome(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
+		int totalIncome = (monthlySalary + otherMonthlyIncome) * numberOfMonthWorking;
+		int taxFreeAllowance = calculateTaxFreeAllowance(isMarried, numberOfChildren);
+		return totalIncome - deductible - taxFreeAllowance;
+	}
+	
+	private static int calculateTaxFreeAllowance(boolean isMarried, int numberOfChildren) {
+		int taxFreeAllowance = 54000000;
+		if (isMarried) {
+			taxFreeAllowance += 4500000;
+		}
+		taxFreeAllowance += Math.min(numberOfChildren, 3) * 1500000;
+		return taxFreeAllowance;
+	}
+	
+	private static int calculateTaxAmount(int taxableIncome) {
+		double taxRate = 0.05;
+		int tax = (int) Math.round(taxRate * taxableIncome);
+		return Math.max(tax, 0); // Ensure tax is non-negative
+	}	
 	
 }
