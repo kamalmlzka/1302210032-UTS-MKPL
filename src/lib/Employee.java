@@ -1,8 +1,5 @@
 package lib;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class Employee {
 
     private String employeeId;
@@ -29,12 +26,6 @@ public class Employee {
     private List<String> childNames;
     private List<String> childIdNumbers;
 
-    // Define named constants for salary grades
-    private static final int GRADE_1_SALARY = 3000000;
-    private static final int GRADE_2_SALARY = 5000000;
-    private static final int GRADE_3_SALARY = 7000000;
-    private static final double FOREIGNER_SALARY_MULTIPLIER = 1.5;
-
     public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, boolean gender) {
         this.employeeId = employeeId;
         this.firstName = firstName;
@@ -52,29 +43,7 @@ public class Employee {
     }
 
     public void setMonthlySalary(int grade) {
-        switch (grade) {
-            case 1:
-                monthlySalary = GRADE_1_SALARY;
-                if (isForeigner) {
-                    monthlySalary *= FOREIGNER_SALARY_MULTIPLIER;
-                }
-                break;
-            case 2:
-                monthlySalary = GRADE_2_SALARY;
-                if (isForeigner) {
-                    monthlySalary *= FOREIGNER_SALARY_MULTIPLIER;
-                }
-                break;
-            case 3:
-                monthlySalary = GRADE_3_SALARY;
-                if (isForeigner) {
-                    monthlySalary *= FOREIGNER_SALARY_MULTIPLIER;
-                }
-                break;
-            default:
-                // Handle invalid grade
-                break;
-        }
+        this.monthlySalary = Utility.calculateAdjustedSalary(grade, isForeigner);
     }
 	
 	public void setAnnualDeductible(int deductible) {	
