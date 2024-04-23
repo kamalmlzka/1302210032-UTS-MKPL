@@ -1,6 +1,15 @@
 package lib;
 
 public class TaxFunction {
+	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
+        int taxableIncome = calculateTaxableIncome(monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible, isMarried, numberOfChildren);
+        return calculateTaxAmount(taxableIncome);
+    }
+
+	private static int calculateTaxableIncome(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
+        // Calculate taxable income based on the adjusted monthly salary and other parameters
+    }
+
     public static int calculateTax(TaxCalculationInput input) {
         int taxableIncome = calculateTaxableIncome(input);
         int tax = calculateTaxAmount(taxableIncome);
@@ -26,5 +35,10 @@ public class TaxFunction {
         double taxRate = 0.05;
         int tax = (int) Math.round(taxRate * taxableIncome);
         return Math.max(tax, 0);
+    }
+
+	public static int calculateTax(int grade, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren, boolean isForeigner) {
+        int monthlySalary = Utility.calculateAdjustedSalary(grade, isForeigner);
+        return calculateTax(monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible, isMarried, numberOfChildren);
     }
 }
